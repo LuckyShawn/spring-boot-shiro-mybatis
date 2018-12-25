@@ -1,0 +1,68 @@
+spring:
+  datasource:
+    #数据源基本配置
+    username: root
+    password: tempus
+    #url: jdbc:mysql://47.107.183.79:3308/shiro?useSSL=false
+    url: jdbc:mysql://localhost:3306/shiro?useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    #schema: #是一个List，用于配置sql文件路径 每次都会加载，第一次启动后最好注释
+    # - classpath:sql/department.sql
+    # - classpath:sql/employee.sql
+    #initialization-mode: always   #总是自动加载sql
+
+#   数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+#   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    #filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  thymeleaf:
+    cache: false
+  # WebStatFilter配置
+  web-stat-filter:
+    enabled: true
+    # 添加过滤规则
+    url-pattern: /*
+    # 忽略过滤的格式
+    exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+
+  # StatViewServlet配置
+  stat-view-servlet:
+    enabled: true
+    # 访问路径为/druid时，跳转到StatViewServlet
+    url-pattern: /druid/*
+    # 是否能够重置数据
+    reset-enable: false
+    # 需要账号密码才能访问控制台
+    login-username: druid
+    login-password: druid123
+    # IP白名单
+    # allow: 127.0.0.1
+    # IP黑名单（共同存在时，deny优先于allow）
+    # deny: 192.168.1.218
+
+  # 配置StatFilter
+  filter:
+    stat:
+      log-slow-sql: true
+
+mybatis:
+  # type-aliases扫描路径
+  type-aliases-package: com.shawn.springbootshiromybatis.entites
+  # mapper xml实现扫描路径
+  mapper-locations: classpath:mapper/*.xml
+  property:
+    order: BEFORE
